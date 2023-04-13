@@ -9,12 +9,7 @@ import 'dart:typed_data';
 
 import 'package:shared_aws_api/shared.dart' as _s;
 import 'package:shared_aws_api/shared.dart'
-    show
-        rfc822ToJson,
-        iso8601ToJson,
-        unixTimestampToJson,
-        nonNullableTimeStampFromJson,
-        timeStampFromJson;
+    show rfc822ToJson, iso8601ToJson, unixTimestampToJson, nonNullableTimeStampFromJson, timeStampFromJson;
 
 import 'sts-2011-06-15.meta.dart';
 export 'package:shared_aws_api/shared.dart' show AwsClientCredentials;
@@ -46,8 +41,7 @@ class STS {
           credentialsProvider: credentialsProvider,
           endpointUrl: endpointUrl,
         ),
-        shapes = shapesJson
-            .map((key, value) => MapEntry(key, _s.Shape.fromJson(value)));
+        shapes = shapesJson.map((key, value) => MapEntry(key, _s.Shape.fromJson(value)));
 
   /// Closes the internal HTTP client if none was provided at creation.
   /// If a client was passed as a constructor argument, this becomes a noop.
@@ -1163,6 +1157,7 @@ class STS {
       version: '2011-06-15',
       method: 'POST',
       requestUri: '/',
+      signed: false,
       exceptionFnMap: _exceptionFns,
       shape: shapes['AssumeRoleWithWebIdentityRequest'],
       shapes: shapes,
@@ -1802,12 +1797,8 @@ class AssumeRoleResponse {
   });
   factory AssumeRoleResponse.fromXml(_s.XmlElement elem) {
     return AssumeRoleResponse(
-      assumedRoleUser: _s
-          .extractXmlChild(elem, 'AssumedRoleUser')
-          ?.let((e) => AssumedRoleUser.fromXml(e)),
-      credentials: _s
-          .extractXmlChild(elem, 'Credentials')
-          ?.let((e) => Credentials.fromXml(e)),
+      assumedRoleUser: _s.extractXmlChild(elem, 'AssumedRoleUser')?.let((e) => AssumedRoleUser.fromXml(e)),
+      credentials: _s.extractXmlChild(elem, 'Credentials')?.let((e) => Credentials.fromXml(e)),
       packedPolicySize: _s.extractXmlIntValue(elem, 'PackedPolicySize'),
     );
   }
@@ -1880,13 +1871,9 @@ class AssumeRoleWithSAMLResponse {
   });
   factory AssumeRoleWithSAMLResponse.fromXml(_s.XmlElement elem) {
     return AssumeRoleWithSAMLResponse(
-      assumedRoleUser: _s
-          .extractXmlChild(elem, 'AssumedRoleUser')
-          ?.let((e) => AssumedRoleUser.fromXml(e)),
+      assumedRoleUser: _s.extractXmlChild(elem, 'AssumedRoleUser')?.let((e) => AssumedRoleUser.fromXml(e)),
       audience: _s.extractXmlStringValue(elem, 'Audience'),
-      credentials: _s
-          .extractXmlChild(elem, 'Credentials')
-          ?.let((e) => Credentials.fromXml(e)),
+      credentials: _s.extractXmlChild(elem, 'Credentials')?.let((e) => Credentials.fromXml(e)),
       issuer: _s.extractXmlStringValue(elem, 'Issuer'),
       nameQualifier: _s.extractXmlStringValue(elem, 'NameQualifier'),
       packedPolicySize: _s.extractXmlIntValue(elem, 'PackedPolicySize'),
@@ -1953,17 +1940,12 @@ class AssumeRoleWithWebIdentityResponse {
   });
   factory AssumeRoleWithWebIdentityResponse.fromXml(_s.XmlElement elem) {
     return AssumeRoleWithWebIdentityResponse(
-      assumedRoleUser: _s
-          .extractXmlChild(elem, 'AssumedRoleUser')
-          ?.let((e) => AssumedRoleUser.fromXml(e)),
+      assumedRoleUser: _s.extractXmlChild(elem, 'AssumedRoleUser')?.let((e) => AssumedRoleUser.fromXml(e)),
       audience: _s.extractXmlStringValue(elem, 'Audience'),
-      credentials: _s
-          .extractXmlChild(elem, 'Credentials')
-          ?.let((e) => Credentials.fromXml(e)),
+      credentials: _s.extractXmlChild(elem, 'Credentials')?.let((e) => Credentials.fromXml(e)),
       packedPolicySize: _s.extractXmlIntValue(elem, 'PackedPolicySize'),
       provider: _s.extractXmlStringValue(elem, 'Provider'),
-      subjectFromWebIdentityToken:
-          _s.extractXmlStringValue(elem, 'SubjectFromWebIdentityToken'),
+      subjectFromWebIdentityToken: _s.extractXmlStringValue(elem, 'SubjectFromWebIdentityToken'),
     );
   }
 }
@@ -2144,12 +2126,8 @@ class GetFederationTokenResponse {
   });
   factory GetFederationTokenResponse.fromXml(_s.XmlElement elem) {
     return GetFederationTokenResponse(
-      credentials: _s
-          .extractXmlChild(elem, 'Credentials')
-          ?.let((e) => Credentials.fromXml(e)),
-      federatedUser: _s
-          .extractXmlChild(elem, 'FederatedUser')
-          ?.let((e) => FederatedUser.fromXml(e)),
+      credentials: _s.extractXmlChild(elem, 'Credentials')?.let((e) => Credentials.fromXml(e)),
+      federatedUser: _s.extractXmlChild(elem, 'FederatedUser')?.let((e) => FederatedUser.fromXml(e)),
       packedPolicySize: _s.extractXmlIntValue(elem, 'PackedPolicySize'),
     );
   }
@@ -2171,9 +2149,7 @@ class GetSessionTokenResponse {
   });
   factory GetSessionTokenResponse.fromXml(_s.XmlElement elem) {
     return GetSessionTokenResponse(
-      credentials: _s
-          .extractXmlChild(elem, 'Credentials')
-          ?.let((e) => Credentials.fromXml(e)),
+      credentials: _s.extractXmlChild(elem, 'Credentials')?.let((e) => Credentials.fromXml(e)),
     );
   }
 }
@@ -2242,10 +2218,7 @@ class ExpiredTokenException extends _s.GenericAwsException {
 
 class IDPCommunicationErrorException extends _s.GenericAwsException {
   IDPCommunicationErrorException({String? type, String? message})
-      : super(
-            type: type,
-            code: 'IDPCommunicationErrorException',
-            message: message);
+      : super(type: type, code: 'IDPCommunicationErrorException', message: message);
 }
 
 class IDPRejectedClaimException extends _s.GenericAwsException {
@@ -2255,34 +2228,22 @@ class IDPRejectedClaimException extends _s.GenericAwsException {
 
 class InvalidAuthorizationMessageException extends _s.GenericAwsException {
   InvalidAuthorizationMessageException({String? type, String? message})
-      : super(
-            type: type,
-            code: 'InvalidAuthorizationMessageException',
-            message: message);
+      : super(type: type, code: 'InvalidAuthorizationMessageException', message: message);
 }
 
 class InvalidIdentityTokenException extends _s.GenericAwsException {
   InvalidIdentityTokenException({String? type, String? message})
-      : super(
-            type: type,
-            code: 'InvalidIdentityTokenException',
-            message: message);
+      : super(type: type, code: 'InvalidIdentityTokenException', message: message);
 }
 
 class MalformedPolicyDocumentException extends _s.GenericAwsException {
   MalformedPolicyDocumentException({String? type, String? message})
-      : super(
-            type: type,
-            code: 'MalformedPolicyDocumentException',
-            message: message);
+      : super(type: type, code: 'MalformedPolicyDocumentException', message: message);
 }
 
 class PackedPolicyTooLargeException extends _s.GenericAwsException {
   PackedPolicyTooLargeException({String? type, String? message})
-      : super(
-            type: type,
-            code: 'PackedPolicyTooLargeException',
-            message: message);
+      : super(type: type, code: 'PackedPolicyTooLargeException', message: message);
 }
 
 class RegionDisabledException extends _s.GenericAwsException {
@@ -2291,12 +2252,10 @@ class RegionDisabledException extends _s.GenericAwsException {
 }
 
 final _exceptionFns = <String, _s.AwsExceptionFn>{
-  'ExpiredTokenException': (type, message) =>
-      ExpiredTokenException(type: type, message: message),
+  'ExpiredTokenException': (type, message) => ExpiredTokenException(type: type, message: message),
   'IDPCommunicationErrorException': (type, message) =>
       IDPCommunicationErrorException(type: type, message: message),
-  'IDPRejectedClaimException': (type, message) =>
-      IDPRejectedClaimException(type: type, message: message),
+  'IDPRejectedClaimException': (type, message) => IDPRejectedClaimException(type: type, message: message),
   'InvalidAuthorizationMessageException': (type, message) =>
       InvalidAuthorizationMessageException(type: type, message: message),
   'InvalidIdentityTokenException': (type, message) =>
@@ -2305,6 +2264,5 @@ final _exceptionFns = <String, _s.AwsExceptionFn>{
       MalformedPolicyDocumentException(type: type, message: message),
   'PackedPolicyTooLargeException': (type, message) =>
       PackedPolicyTooLargeException(type: type, message: message),
-  'RegionDisabledException': (type, message) =>
-      RegionDisabledException(type: type, message: message),
+  'RegionDisabledException': (type, message) => RegionDisabledException(type: type, message: message),
 };
